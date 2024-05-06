@@ -56,10 +56,35 @@ class StatsPage(ttk.Frame):
         submit_button = tk.Button(input_frame, text="Submit Distance", command=lambda entry=distance_entry, tbl=table, clb=club: self.submit_distance(entry, tbl, clb))
         submit_button.pack(side=tk.LEFT)
 
+        # Delete button to remove entries from the table
+        delete_button = tk.Button(input_frame, text="Delete", command=lambda tbl=table, clb=club: self.delete_entry(tbl, clb))
+        delete_button.pack(side=tk.LEFT)
+
         # Label to display average distance dynamically
         average_label = tk.Label(frame, text="")
         average_label.pack()
         self.average_labels[club] = average_label
+
+
+    def delete_entry(self, table, club):
+        selected_item = table.selection()
+        if selected_item:
+            table.delete(selected_item)
+            # Calculate average distance after deleting
+            total_distance = 0
+            count = 0
+            for item in table.get_children():
+                total_distance += float(table.item(item)["values"][0])
+                count += 1
+            if count > 0:
+                average_distance = total_distance / count
+                self.club_averages[club] = f"{club} Average Distance: {average_distance:.2f} yards"
+                # Update average
+                self.average_labels[club].config(text=self.club_averages[club])
+            else:
+                # If no entries after deletion, reset average
+                self.club_averages[club] = ""
+                self.average_labels[club].config(text="")
 
 
     def submit_distance(self, entry, table, club):
