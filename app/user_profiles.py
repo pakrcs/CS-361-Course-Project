@@ -7,7 +7,7 @@ class UserProfilesPage(tk.Frame):
         self.user_label = tk.Label(self, text="User Profile")
         self.user_label.pack()
 
-        self.back_button = tk.Button(self, text="Back to Main Menu", command=self.back_to_main)
+        self.back_button = tk.Button(self, text="Back to Main", command=self.back_to_main)
         self.back_button.pack()
 
     def back_to_main(self):
