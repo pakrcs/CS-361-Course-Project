@@ -2,10 +2,11 @@ import tkinter as tk
 from user_profiles import UserProfilesPage
 from stats import StatsPage
 
+
 class GolfApp(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("Golf Tracer App")
+        self.title("Golf Tracker App")
 
         self.main_screen = MainScreen(self)
         self.main_screen.pack(fill=tk.BOTH, expand=True)
@@ -21,6 +22,7 @@ class GolfApp(tk.Tk):
         self.main_screen.pack_forget()
         self.stats_page.pack(fill=tk.BOTH, expand=True)
 
+
 class MainScreen(tk.Frame):
     def __init__(self, master):
         super().__init__(master)
@@ -30,6 +32,7 @@ class MainScreen(tk.Frame):
 
         self.stats_button = tk.Button(self, text="My Stats", command=master.show_stats)
         self.stats_button.pack()
+
 
 if __name__ == "__main__":
     app = GolfApp()

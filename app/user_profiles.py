@@ -1,6 +1,9 @@
 import tkinter as tk
 
+
 class UserProfilesPage(tk.Frame):
+    """Page for users to enter information and preferences for the application."""
+
     def __init__(self, master):
         super().__init__(master)
 
@@ -10,6 +13,7 @@ class UserProfilesPage(tk.Frame):
         self.back_button = tk.Button(self, text="Back to Main", command=self.back_to_main)
         self.back_button.pack()
 
+
     def back_to_main(self):
-        self.pack_forget()  # Hide the current page
-        self.master.main_screen.pack(fill=tk.BOTH, expand=True)  # Show the main screen again
+        self.pack_forget()
+        self.master.main_screen.pack(fill=tk.BOTH, expand=True)

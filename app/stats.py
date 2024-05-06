@@ -1,15 +1,18 @@
-# stats.py
-
 import tkinter as tk
 from tkinter import ttk
 
+
 class StatsPage(ttk.Frame):
+    """Page for entering distances for each club, keeping track of club distance, 
+    and calculating the average distance for each club."""
+
     def __init__(self, master):
         super().__init__(master)
-        self.club_averages = {}  # Dictionary to store club average distances
-        self.club_distance_entries = {}  # Dictionary to store club distance entry widgets
-        self.club_tables = {}  # Dictionary to store club tables
-        self.average_labels = {}  # Dictionary to store labels for average distances
+        # Create dictionaries to store club entries and data
+        self.club_averages = {}
+        self.club_distance_entries = {}
+        self.club_tables = {}
+        self.average_labels = {}
 
         self.stats_label = tk.Label(self, text="Stats Page")
         self.stats_label.pack()
@@ -30,8 +33,9 @@ class StatsPage(ttk.Frame):
         self.back_button = tk.Button(self, text="Back to Main", command=self.back_to_main)
         self.back_button.pack()
 
+
     def create_club_table(self, frame, club):
-        # Table to display submitted distances for each club
+        # Table to display distances for each club
         table = ttk.Treeview(frame, columns=["Distance"], show="headings")
         table.heading("Distance", text="Distance")
         table.pack()
@@ -45,7 +49,7 @@ class StatsPage(ttk.Frame):
         distance_entry = tk.Entry(input_frame)
         distance_entry.pack(side=tk.LEFT)
 
-        # Store the distance entry widget in the dictionary for later access
+        # Store the distance entry widget in the dictionary
         self.club_distance_entries[club] = distance_entry
         self.club_tables[club] = table
 
@@ -57,12 +61,14 @@ class StatsPage(ttk.Frame):
         average_label.pack()
         self.average_labels[club] = average_label
 
+
     def submit_distance(self, entry, table, club):
         # Get distance from user input and add it to the table
         distance = entry.get()
         if distance:
             table.insert("", "end", values=(distance,))
-            entry.delete(0, tk.END)  # Clear the entry after submission
+            # Clear the entry after submission
+            entry.delete(0, tk.END)
 
             # Calculate average distance for the club
             total_distance = 0
@@ -73,8 +79,10 @@ class StatsPage(ttk.Frame):
             if count > 0:
                 average_distance = total_distance / count
                 self.club_averages[club] = f"{club} Average Distance: {average_distance:.2f} yards"
-                self.average_labels[club].config(text=self.club_averages[club])  # Update average label dynamically
+                # Update average label dynamically
+                self.average_labels[club].config(text=self.club_averages[club])
+
 
     def back_to_main(self):
-        self.pack_forget()  # Hide the current page
-        self.master.main_screen.pack(fill=tk.BOTH, expand=True)  # Show the main screen again
+        self.pack_forget()
+        self.master.main_screen.pack(fill=tk.BOTH, expand=True)
