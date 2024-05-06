@@ -31,7 +31,7 @@ class StatsPage(ttk.Frame):
             self.create_club_table(frame, club)
 
         self.back_button = tk.Button(self, text="Back to Main", command=self.back_to_main)
-        self.back_button.pack()
+        self.back_button.pack(side=tk.BOTTOM)
 
 
     def create_club_table(self, frame, club):
