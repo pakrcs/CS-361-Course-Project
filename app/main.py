@@ -25,10 +25,10 @@ class MainScreen(tk.Frame):
     def __init__(self, master):
         super().__init__(master)
 
-        self.user_profiles_button = tk.Button(self, text="User Profiles", command=master.show_user_profiles)
+        self.user_profiles_button = tk.Button(self, text="User Profile", command=master.show_user_profiles)
         self.user_profiles_button.pack()
 
-        self.stats_button = tk.Button(self, text="Stats", command=master.show_stats)
+        self.stats_button = tk.Button(self, text="My Stats", command=master.show_stats)
         self.stats_button.pack()
 
 if __name__ == "__main__":
