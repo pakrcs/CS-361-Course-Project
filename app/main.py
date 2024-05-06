@@ -5,7 +5,7 @@ from stats import StatsPage
 class GolfApp(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("Golf Microservices App")
+        self.title("Golf Tracer App")
 
         self.main_screen = MainScreen(self)
         self.main_screen.pack(fill=tk.BOTH, expand=True)
