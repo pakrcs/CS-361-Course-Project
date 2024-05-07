@@ -98,7 +98,7 @@ class UserProfilesPage(tk.Frame):
     def show_description(self):
         # IH2 tells the user why it would useful to set up a profile
         description = ("Creating a profile allows you to track your progress over time by "
-                       "saving club distances. It also allows you the ability to access to "
+                       "saving club distances. It also allows you the ability to "
                        "access club recommendations for certain scenarios. ")
 
         messagebox.showinfo("Information", description)
