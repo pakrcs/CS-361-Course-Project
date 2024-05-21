@@ -1,7 +1,7 @@
 import tkinter as tk
 from user_profiles import UserProfilesPage
 from stats import StatsPage
-import requests  # Import requests for HTTP communication
+import requests
 
 
 class GolfApp(tk.Tk):
