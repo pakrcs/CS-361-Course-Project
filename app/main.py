@@ -72,6 +72,23 @@ class GolfApp(tk.Tk):
         else:
             messagebox.showerror("Error", "Failed to fetch quote.")
 
+    def send_feedback(self, website_owner_email, user_email, feedback, feedback_rating, feedback_response):
+        url = 'https://email-server-smoky.vercel.app/emailServer'
+        headers = {'Content-Type': 'application/json'}
+        data = {
+            'websiteOwnerEmail': website_owner_email,
+            'userEmail': user_email,
+            'feedback': feedback,
+            'feedbackRating': feedback_rating,
+            'feedbackResponse': feedback_response
+        }
+        response = requests.post(url, headers=headers, json=data)
+        
+        if response.status_code == 200:
+            messagebox.showinfo("Feedback Sent", "Thank you for your feedback!")
+        else:
+            messagebox.showerror("Error", "Failed to send feedback.")
+
 
 class MainScreen(tk.Frame):
     def __init__(self, master):
@@ -88,6 +105,42 @@ class MainScreen(tk.Frame):
 
         self.quotes_button = tk.Button(self, text="Quotes", command=master.show_quotes)
         self.quotes_button.pack()
+
+        self.feedback_button = tk.Button(self, text="Feedback", command=self.show_feedback_window)
+        self.feedback_button.pack()
+
+    def show_feedback_window(self):
+        feedback_window = tk.Toplevel(self)
+        feedback_window.title("Feedback")
+
+        tk.Label(feedback_window, text="Website Owner Email:").pack()
+        website_owner_entry = tk.Entry(feedback_window)
+        website_owner_entry.pack()
+
+        tk.Label(feedback_window, text="User Email:").pack()
+        user_email_entry = tk.Entry(feedback_window)
+        user_email_entry.pack()
+
+        tk.Label(feedback_window, text="Feedback:").pack()
+        feedback_entry = tk.Entry(feedback_window)
+        feedback_entry.pack()
+
+        tk.Label(feedback_window, text="Feedback Rating:").pack()
+        feedback_rating_entry = tk.Entry(feedback_window)
+        feedback_rating_entry.pack()
+
+        tk.Label(feedback_window, text="Feedback Response:").pack()
+        feedback_response_entry = tk.Entry(feedback_window)
+        feedback_response_entry.pack()
+
+        send_feedback_button = tk.Button(feedback_window, text="Send Feedback", command=lambda: self.master.send_feedback(
+            website_owner_entry.get(),
+            user_email_entry.get(),
+            feedback_entry.get(),
+            feedback_rating_entry.get(),
+            feedback_response_entry.get()
+        ))
+        send_feedback_button.pack()
 
 
 if __name__ == "__main__":
