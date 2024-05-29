@@ -15,6 +15,7 @@ def get_club_recommendation(distance, wind_condition):
 
     print(f"Adjusted distance: {distance}")
 
+    # Distances
     if distance > 250:
         return "Driver"
     elif distance > 225:
