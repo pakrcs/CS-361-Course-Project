@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 
+
 class CreateProfileWindow(tk.Toplevel):
     """Window for users to enter profile information when creating a new profile."""
 
@@ -43,7 +44,6 @@ class CreateProfileWindow(tk.Toplevel):
         self.create_button = tk.Button(self, text="Create", command=self.create_profile)
         self.create_button.grid(row=5, columnspan=2)
 
-
     def create_profile(self):
         # User inputs data into entry fields
         username = self.username_entry.get()
@@ -67,6 +67,7 @@ class CreateProfileWindow(tk.Toplevel):
         }
         self.user_profiles_page.update_profile(profile_data)
         self.destroy()
+
 
 class UserProfilesPage(tk.Frame):
     """Page for users to enter information and preferences for the application."""
@@ -94,7 +95,6 @@ class UserProfilesPage(tk.Frame):
         self.back_button = tk.Button(self, text="Back to Main", command=self.back_to_main)
         self.back_button.pack(side=tk.BOTTOM)
 
-
     def show_description(self):
         # IH2 tells the user why it would useful to set up a profile
         description = ("Creating a profile allows you to track your progress over time by "
@@ -103,23 +103,19 @@ class UserProfilesPage(tk.Frame):
 
         messagebox.showinfo("Information", description)
 
-
     def create_profile_window(self):
         # Open the profile creation window
         profile_window = CreateProfileWindow(self, self)
-
 
     def update_profile(self, profile_data):
         # Update the profile data and display it on the User Profile page
         self.profile_data = profile_data
         self.display_profile()
 
-
     def display_profile(self):
         # Display the profile data on the User Profile page
         profile_text = "\n".join(f"{key}: {value}" for key, value in self.profile_data.items())
         self.profile_display_label.config(text=profile_text)
-
 
     def back_to_main(self):
         self.pack_forget()

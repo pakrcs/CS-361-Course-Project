@@ -33,7 +33,6 @@ class StatsPage(ttk.Frame):
         self.back_button = tk.Button(self, text="Back to Main", command=self.back_to_main)
         self.back_button.pack(side=tk.BOTTOM)
 
-
     def create_club_table(self, frame, club):
         # Table to display distances for each club
         table = ttk.Treeview(frame, columns=["Distance"], show="headings")
@@ -65,7 +64,6 @@ class StatsPage(ttk.Frame):
         average_label.pack()
         self.average_labels[club] = average_label
 
-
     def delete_entry(self, table, club):
         selected_item = table.selection()
         if selected_item:
@@ -86,7 +84,6 @@ class StatsPage(ttk.Frame):
                 self.club_averages[club] = ""
                 self.average_labels[club].config(text="")
 
-
     def submit_distance(self, entry, table, club):
         # Get distance from user input and add it to the table
         distance = entry.get()
@@ -106,7 +103,6 @@ class StatsPage(ttk.Frame):
                 self.club_averages[club] = f"{club} Average Distance: {average_distance:.2f} yards"
                 # Update average label dynamically
                 self.average_labels[club].config(text=self.club_averages[club])
-
 
     def back_to_main(self):
         self.pack_forget()
