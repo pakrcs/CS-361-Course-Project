@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox, ttk
+import random
 import requests
 from user_profiles import UserProfilesPage
 from stats import StatsPage
@@ -118,6 +119,25 @@ class GolfApp(tk.Tk):
         comparison_label = tk.Label(comparison_window, text="")
         comparison_label.pack()
 
+    def send_goal(self, goal_text):
+        url = 'http://localhost:5005/submit_goal'
+        data = {'goal': goal_text}
+        response = requests.post(url, json=data)
+
+        if response.status_code == 200:
+            return True
+        else:
+            messagebox.showerror("Error", "Failed to submit goal.")
+            return False
+        
+    def generate_random_goal(self):
+        try:
+            with open('golf_goals.txt', 'r') as file:
+                goals_list = file.readlines()
+            random_goal = random.choice(goals_list).strip()
+            self.main_screen.display_random_goal(random_goal)
+        except FileNotFoundError:
+            messagebox.showerror("Error", "golf_goals.txt not found.")
 
 
 class MainScreen(tk.Frame):
@@ -135,6 +155,9 @@ class MainScreen(tk.Frame):
 
         self.compare_button = tk.Button(self, text="Compare with Tour Averages", command=master.compare_with_tour_averages)
         self.compare_button.pack()
+
+        self.golf_goals_button = tk.Button(self, text="Golf Goals", command=self.open_goals_window)
+        self.golf_goals_button.pack()
 
         self.quotes_button = tk.Button(self, text="Quotes", command=master.show_quotes)
         self.quotes_button.pack()
@@ -169,6 +192,44 @@ class MainScreen(tk.Frame):
             feedback_rating_entry.get()
         ))
         send_feedback_button.pack()
+
+    def open_goals_window(self):
+        goals_window = tk.Toplevel(self)
+        goals_window.title("Golf Goals")
+
+        self.goal_label = tk.Label(goals_window, text="Enter Your Golf Goal:")
+        self.goal_label.pack()
+
+        self.goal_entry = tk.Entry(goals_window)
+        self.goal_entry.pack()
+
+        self.submit_goal_button = tk.Button(goals_window, text="Submit Goal", command=self.submit_goal)
+        self.submit_goal_button.pack()
+
+        self.generate_goal_button = tk.Button(goals_window, text="Generate a Goal", command=self.generate_random_goal)
+        self.generate_goal_button.pack()
+
+        self.submitted_goal_label = tk.Label(goals_window, text="")
+        self.submitted_goal_label.pack()
+
+    def submit_goal(self):
+        goal_text = self.goal_entry.get()
+        if goal_text:
+            success = self.master.send_goal(goal_text)
+            if success:
+                self.submitted_goal_label.config(text=f"Submitted Goal:\n{goal_text}")
+                self.goal_entry.delete(0, tk.END)
+        else:
+            messagebox.showerror("Error", "Please enter a valid goal.")
+
+    def generate_random_goal(self):
+        try:
+            with open('golf_goals.txt', 'r') as file:
+                goals_list = file.readlines()
+            random_goal = random.choice(goals_list).strip()
+            self.submitted_goal_label.config(text=f"Generated Goal:\n{random_goal}")
+        except FileNotFoundError:
+            messagebox.showerror("Error", "golf_goals.txt not found.")
 
 
 if __name__ == "__main__":
