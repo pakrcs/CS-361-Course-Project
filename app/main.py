@@ -156,6 +156,9 @@ class MainScreen(tk.Frame):
         self.compare_button = tk.Button(self, text="Compare with Tour Averages", command=master.compare_with_tour_averages)
         self.compare_button.pack()
 
+        self.courses_button = tk.Button(self, text="Golf Courses", command=self.show_courses_window)
+        self.courses_button.pack()
+
         self.golf_goals_button = tk.Button(self, text="Golf Goals", command=self.open_goals_window)
         self.golf_goals_button.pack()
 
@@ -230,6 +233,30 @@ class MainScreen(tk.Frame):
             self.submitted_goal_label.config(text=f"Generated Goal:\n{random_goal}")
         except FileNotFoundError:
             messagebox.showerror("Error", "golf_goals.txt not found.")
+
+    def show_courses_window(self):
+        courses_window = tk.Toplevel(self)
+        courses_window.title("Golf Courses")
+
+        for course in self.fetch_courses_data():
+            tk.Label(courses_window, text=f"Name: {course['name']}").pack()
+            tk.Label(courses_window, text=f"Location: {course['location']}").pack()
+            tk.Label(courses_window, text=f"Par: {course['par']}").pack()
+            tk.Label(courses_window, text=f"Rating: {course['rating']}").pack()
+            tk.Label(courses_window, text=f"Description: {course['description']}").pack()
+            tk.Label(courses_window, text="------------------------").pack()
+
+    def fetch_courses_data(self):
+        try:
+            response = requests.get('http://localhost:5006/get_courses')
+            if response.status_code == 200:
+                return response.json()
+            else:
+                messagebox.showerror("Error", "Failed to fetch course data.")
+                return []
+        except requests.RequestException as e:
+            messagebox.showerror("Error", f"Request Error: {e}")
+            return []
 
 
 if __name__ == "__main__":
