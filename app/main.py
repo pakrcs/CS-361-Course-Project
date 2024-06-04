@@ -91,27 +91,38 @@ class GolfApp(tk.Tk):
 
     def compare_with_tour_averages(self):
         def compare():
+            club = club_combobox.get()
             try:
                 distance = float(distance_entry.get())
             except ValueError:
                 messagebox.showerror("Error", "Please enter a valid distance.")
                 return
 
-            tour_averages_url = f'http://localhost:5004/compare_distance?distance={distance}'
+            tour_averages_url = f'http://localhost:5004/compare_distance?club={club}&distance={distance}'
             tour_averages_response = requests.get(tour_averages_url)
             
             if tour_averages_response.status_code == 200:
                 tour_averages_data = tour_averages_response.json()
-                comparison_label.config(text="Comparison with Tour Averages:")
-                for club, difference in tour_averages_data.items():
-                    comparison_label.config(text=f"{comparison_label.cget('text')}\n{club}: {difference:.1f} yards")
+                comparison_label.config(
+                    text=f"{tour_averages_data['club']} - Your Distance: {tour_averages_data['entered_distance']} yards\n"
+                         f"Tour Average Distance: {tour_averages_data['tour_average_distance']} yards\n"
+                         f"Difference: {tour_averages_data['difference']} yards\n"
+                         f"You are {tour_averages_data['comparison']} the tour average."
+                )
             else:
                 messagebox.showerror("Error", "Failed to fetch tour averages data.")
 
         comparison_window = tk.Toplevel(self)
         comparison_window.title("Compare with Tour Averages")
 
-        tk.Label(comparison_window, text="Enter your distance:").pack()
+        tk.Label(comparison_window, text="Select Club:").pack()
+        club_combobox = ttk.Combobox(comparison_window, values=[
+            "Driver", "3 Wood", "5 Wood", "2 Iron", "3 Iron", "4 Iron", "5 Iron", "6 Iron", 
+            "7 Iron", "8 Iron", "9 Iron", "Pitching Wedge"
+        ])
+        club_combobox.pack()
+
+        tk.Label(comparison_window, text="Enter your distance (yards):").pack()
         distance_entry = tk.Entry(comparison_window)
         distance_entry.pack()
 
