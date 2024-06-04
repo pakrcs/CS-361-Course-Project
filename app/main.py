@@ -72,15 +72,14 @@ class GolfApp(tk.Tk):
         else:
             messagebox.showerror("Error", "Failed to fetch quote.")
 
-    def send_feedback(self, website_owner_email, user_email, feedback, feedback_rating, feedback_response):
+    def send_feedback(self, website_owner_email, user_email, feedback, feedback_rating):
         url = 'https://email-server-smoky.vercel.app/emailServer'
         headers = {'Content-Type': 'application/json'}
         data = {
             'websiteOwnerEmail': website_owner_email,
             'userEmail': user_email,
             'feedback': feedback,
-            'feedbackRating': feedback_rating,
-            'feedbackResponse': feedback_response
+            'feedbackRating': feedback_rating
         }
         response = requests.post(url, headers=headers, json=data)
         
@@ -125,20 +124,15 @@ class MainScreen(tk.Frame):
         feedback_entry = tk.Entry(feedback_window)
         feedback_entry.pack()
 
-        tk.Label(feedback_window, text="Feedback Rating:").pack()
+        tk.Label(feedback_window, text="Feedback Rating (0-5):").pack()
         feedback_rating_entry = tk.Entry(feedback_window)
         feedback_rating_entry.pack()
-
-        tk.Label(feedback_window, text="Feedback Response:").pack()
-        feedback_response_entry = tk.Entry(feedback_window)
-        feedback_response_entry.pack()
 
         send_feedback_button = tk.Button(feedback_window, text="Send Feedback", command=lambda: self.master.send_feedback(
             website_owner_entry.get(),
             user_email_entry.get(),
             feedback_entry.get(),
-            feedback_rating_entry.get(),
-            feedback_response_entry.get()
+            feedback_rating_entry.get()
         ))
         send_feedback_button.pack()
 
