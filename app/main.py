@@ -48,7 +48,7 @@ class GolfApp(tk.Tk):
         recommendation_window = tk.Toplevel(self)
         recommendation_window.title("Club Recommendation")
 
-        tk.Label(recommendation_window, text="Distance to Hole:").pack()
+        tk.Label(recommendation_window, text="Distance to Hole (yards):").pack()
         distance_entry = tk.Entry(recommendation_window)
         distance_entry.pack()
 
