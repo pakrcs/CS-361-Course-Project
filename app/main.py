@@ -88,6 +88,37 @@ class GolfApp(tk.Tk):
         else:
             messagebox.showerror("Error", "Failed to send feedback.")
 
+    def compare_with_tour_averages(self):
+        def compare():
+            try:
+                distance = float(distance_entry.get())
+            except ValueError:
+                messagebox.showerror("Error", "Please enter a valid distance.")
+                return
+
+            tour_averages_url = f'http://localhost:5004/compare_distance?distance={distance}'
+            tour_averages_response = requests.get(tour_averages_url)
+            
+            if tour_averages_response.status_code == 200:
+                tour_averages_data = tour_averages_response.json()
+                comparison_label.config(text="Comparison with Tour Averages:")
+                for club, difference in tour_averages_data.items():
+                    comparison_label.config(text=f"{comparison_label.cget('text')}\n{club}: {difference:.1f} yards")
+            else:
+                messagebox.showerror("Error", "Failed to fetch tour averages data.")
+
+        comparison_window = tk.Toplevel(self)
+        comparison_window.title("Compare with Tour Averages")
+
+        tk.Label(comparison_window, text="Enter your distance:").pack()
+        distance_entry = tk.Entry(comparison_window)
+        distance_entry.pack()
+
+        tk.Button(comparison_window, text="Compare", command=compare).pack()
+        comparison_label = tk.Label(comparison_window, text="")
+        comparison_label.pack()
+
+
 
 class MainScreen(tk.Frame):
     def __init__(self, master):
@@ -101,6 +132,9 @@ class MainScreen(tk.Frame):
 
         self.club_recommendation_button = tk.Button(self, text="Club Recommendation", command=master.show_club_recommendation)
         self.club_recommendation_button.pack()
+
+        self.compare_button = tk.Button(self, text="Compare with Tour Averages", command=master.compare_with_tour_averages)
+        self.compare_button.pack()
 
         self.quotes_button = tk.Button(self, text="Quotes", command=master.show_quotes)
         self.quotes_button.pack()
